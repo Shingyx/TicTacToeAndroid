@@ -2,6 +2,7 @@ package com.github.shingyx.tictactoe;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.GridView;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,6 +18,12 @@ public class MainActivity extends AppCompatActivity {
             gridView.setAdapter(adapter);
             gridView.setOnItemClickListener((parent, view, position, id) ->
                     adapter.update(position));
+        }
+    }
+
+    public void onClick(View view) {
+        if (view.getId() == R.id.btnNewGame) {
+            adapter.newGame();
         }
     }
 }

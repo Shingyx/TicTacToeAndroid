@@ -26,6 +26,34 @@ public class TicTacToeAdapter extends BaseAdapter {
         refreshValues();
     }
 
+    public void newGame() {
+        game.newGame();
+        refreshValues();
+    }
+
+    public void update(int position) {
+        GameState state = game.calculateState();
+        if (state != GameState.IN_PROGRESS) {
+            return;
+        }
+        int row = position / 3;
+        int col = position % 3;
+        boolean move = game.makeMove(row, col);
+        if (!move) {
+            Toast.makeText(context, "Invalid move", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        state = game.calculateState();
+        if (state == GameState.IN_PROGRESS) {
+            game.makeAiMove();
+            state = game.calculateState();
+        }
+        if (state != GameState.IN_PROGRESS) {
+            Toast.makeText(context, state.toString(), Toast.LENGTH_SHORT).show();
+        }
+        refreshValues();
+    }
+
     @Override
     public int getCount() {
         return values.length;
@@ -55,23 +83,6 @@ public class TicTacToeAdapter extends BaseAdapter {
         for (int i = 0; i < values.length; i++) {
             values[i] = board[i / 3][i % 3].toString();
         }
-    }
-
-    public void update(int position) {
-        int row = position / 3;
-        int col = position % 3;
-        boolean move = game.makeMove(row, col);
-        if (!move) {
-            Toast.makeText(context, "Invalid move", Toast.LENGTH_LONG).show();
-            return;
-        }
-        GameState state = game.calculateState();
-        if (state == GameState.IN_PROGRESS) {
-            game.makeAiMove();
-        } else {
-            Toast.makeText(context, state.toString(), Toast.LENGTH_LONG).show();
-        }
-        refreshValues();
         notifyDataSetChanged();
     }
 }
