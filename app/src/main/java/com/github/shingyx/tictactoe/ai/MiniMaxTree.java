@@ -1,8 +1,5 @@
 package com.github.shingyx.tictactoe.ai;
 
-//import game.Player;
-//import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import com.github.shingyx.tictactoe.game.Player;
 import java.util.ArrayList;
 import java.util.Iterator;
