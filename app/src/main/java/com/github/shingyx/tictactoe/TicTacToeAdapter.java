@@ -1,23 +1,29 @@
 package com.github.shingyx.tictactoe;
 
+import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.Arrays;
-import java.util.Objects;
+import com.github.shingyx.tictactoe.game.Game;
+import com.github.shingyx.tictactoe.game.GameState;
+import com.github.shingyx.tictactoe.game.Player;
 
 public class TicTacToeAdapter extends BaseAdapter {
 
-    private String[] values = new String[9];
-    boolean xTurn = true;
+    private Context context;
+    private Game game;
+    private String[] values;
 
-    public TicTacToeAdapter() {
+    public TicTacToeAdapter(Context context) {
         super();
-        Arrays.fill(values, "_");
+        this.context = context;
+        game = new Game();
+        values = new String[9];
+        refreshValues();
     }
 
     @Override
@@ -44,15 +50,28 @@ public class TicTacToeAdapter extends BaseAdapter {
         return textView;
     }
 
-    public void update(int position) {
-        if (values[position].equals("_")) {
-            if (xTurn) {
-                values[position] = "X";
-            } else {
-                values[position] = "O";
-            }
-            xTurn = !xTurn;
-            notifyDataSetChanged();
+    private void refreshValues() {
+        Player[][] board = game.getBoard();
+        for (int i = 0; i < values.length; i++) {
+            values[i] = board[i / 3][i % 3].toString();
         }
+    }
+
+    public void update(int position) {
+        int row = position / 3;
+        int col = position % 3;
+        boolean move = game.makeMove(row, col);
+        if (!move) {
+            Toast.makeText(context, "Invalid move", Toast.LENGTH_LONG).show();
+            return;
+        }
+        GameState state = game.calculateState();
+        if (state == GameState.IN_PROGRESS) {
+            game.makeAiMove();
+        } else {
+            Toast.makeText(context, state.toString(), Toast.LENGTH_LONG).show();
+        }
+        refreshValues();
+        notifyDataSetChanged();
     }
 }

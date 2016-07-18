@@ -11,13 +11,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GridView gridView = (GridView) findViewById(R.id.board);
+        GridView gridView = (GridView) findViewById(R.id.boardView);
         if (gridView != null) {
-            adapter = new TicTacToeAdapter();
+            adapter = new TicTacToeAdapter(this);
             gridView.setAdapter(adapter);
-            gridView.setOnItemClickListener((parent, view, position, id) -> {
-                adapter.update(position);
-            });
+            gridView.setOnItemClickListener((parent, view, position, id) ->
+                    adapter.update(position));
         }
     }
 }
