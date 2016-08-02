@@ -1,4 +1,2 @@
 # TicTacToeAndroid
-TicTacToe GridLayout exercise - incomplete
-
-TODO: Integrate other TicTacToe AI project
+TicTacToe GridView exercise integrated with my Java TicTacToe AI project
